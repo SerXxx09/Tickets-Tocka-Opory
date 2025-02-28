@@ -31,42 +31,42 @@
             const url = `https://script.google.com/macros/s/AKfycbzuIb9hhCOrmSLko76bHrV-TDZ0Rx5VGwap2ArnbnZRl4ZMjNPvS_shJTuEA34_VBaq/exec?promoCode=${promoCode}`;
 
             try {
-                const response = await fetch(url);
-                const data = await response.json();
+        const response = await fetch(url);
+        const data = await response.json();
 
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = `
-                    <p><strong>Количество заказов:</strong> ${data.count}</p>
-                    <p><strong>Общее количество билетов:</strong> ${data.totalTickets}</p>
-                    <p><strong>Общая сумма продаж:</strong> ${data.totalAmount} руб.</p>
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `
+            <p><strong>Количество заказов:</strong> ${data.count}</p>
+            <p><strong>Общее количество билетов:</strong> ${data.totalTickets}</p>
+            <p><strong>Общая сумма продаж:</strong> ${data.totalAmount} руб.</p>
+        `;
+
+        // Отображаем историю заказов
+        const historyTable = document.getElementById('historyTable');
+        const tbody = historyTable.querySelector('tbody');
+        tbody.innerHTML = ''; // Очищаем предыдущие данные
+
+        if (data.history.length > 0) {
+            data.history.forEach(sale => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td data-label="Номер заказа">${sale.orderId}</td>
+                    <td data-label="Количество билетов">${sale.tickets}</td>
+                    <td data-label="Цена билета">${sale.price} руб.</td>
+                    <td data-label="Номер формы">${sale.formId}</td>
                 `;
-
-                // Отображаем историю заказов
-                const historyTable = document.getElementById('historyTable');
-                const tbody = historyTable.querySelector('tbody');
-                tbody.innerHTML = ''; // Очищаем предыдущие данные
-
-                if (data.history.length > 0) {
-                    data.history.forEach(sale => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${sale.orderId}</td>
-                            <td>${sale.tickets}</td>
-                            <td>${sale.price} руб.</td>
-                            <td>${sale.formId}</td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                    historyTable.style.display = 'table'; // Показываем таблицу
-                } else {
-                    historyTable.style.display = 'none'; // Скрываем таблицу, если данных нет
-                }
-            } catch (error) {
-                console.error('Ошибка:', error);
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = `<p style="color: red;">Произошла ошибка при загрузке данных. Попробуйте ещё раз.</p>`;
-            }
+                tbody.appendChild(row);
+            });
+            historyTable.style.display = 'table'; // Показываем таблицу
+        } else {
+            historyTable.style.display = 'none'; // Скрываем таблицу, если данных нет
         }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `<p style="color: red;">Произошла ошибка при загрузке данных. Попробуйте ещё раз.</p>`;
+    }
+}
     </script>
 </body>
 </html>
