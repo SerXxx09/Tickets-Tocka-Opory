@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка продаж по промокоду</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Проверка продаж по промокоду</h1>
+    <input type="text" id="promoCode" placeholder="Введите промокод">
+    <button onclick="checkSales()">Проверить</button>
+    <div id="result"></div>
+    <table id="historyTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Номер заказа</th>
+                <th>Количество билетов</th>
+                <th>Цена билета</th>
+                <th>ID формы</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function checkSales() {
+            const promoCode = document.getElementById('promoCode').value;
+            const url = `https://ваш-url-google-apps-script/exec?promoCode=${promoCode}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `
+                    <p>Количество заказов: ${data.count}</p>
+                    <p>Общее количество билетов: ${data.totalTickets}</p>
+                    <p>Общая сумма продаж: ${data.totalAmount}</p>
+                `;
+
+                // Отображаем историю заказов
+                const historyTable = document.getElementById('historyTable');
+                const tbody = historyTable.querySelector('tbody');
+                tbody.innerHTML = ''; // Очищаем предыдущие данные
+
+                if (data.history.length > 0) {
+                    data.history.forEach(sale => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${sale.orderId}</td>
+                            <td>${sale.tickets}</td>
+                            <td>${sale.price}</td>
+                            <td>${sale.formId}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                    historyTable.style.display = 'table'; // Показываем таблицу
+                } else {
+                    historyTable.style.display = 'none'; // Скрываем таблицу, если данных нет
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        }
+    </script>
+</body>
+</html>
