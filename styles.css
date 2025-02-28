@@ -55,6 +55,7 @@ button:hover {
     display: none; /* Скрываем отладочную информацию для партнёров */
 }
 
+/* Добавь это в твой styles.css */
 table {
     width: 100%;
     max-width: 600px;
@@ -63,12 +64,15 @@ table {
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку */
+    display: block; /* Делаем таблицу блочным элементом */
 }
 
 th, td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Запрещаем перенос текста */
 }
 
 th {
