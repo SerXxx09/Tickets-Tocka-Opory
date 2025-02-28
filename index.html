@@ -51,44 +51,44 @@
 
     <script>
         async function checkSales() {
-            const promoCode = document.getElementById('promoCode').value;
-            const url = `https://ваш-url-google-apps-script/exec?promoCode=${promoCode}`;
+    const promoCode = document.getElementById('promoCode').value;
+    const url = `https://script.google.com/macros/s/AKfycbwNBhHlR23OQMivtSsSBdCvu-nNrJWQTnQdX8P4pMI-W2Jj2nCQzVo23dzB1usLorPJ/exec?promoCode=${promoCode}`;
 
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-                const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = `
-                    <p>Количество заказов: ${data.count}</p>
-                    <p>Общее количество билетов: ${data.totalTickets}</p>
-                    <p>Общая сумма продаж: ${data.totalAmount}</p>
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `
+            <p>Количество заказов: ${data.count}</p>
+            <p>Общее количество билетов: ${data.totalTickets}</p>
+            <p>Общая сумма продаж: ${data.totalAmount}</p>
+        `;
+
+        // Отображаем историю заказов
+        const historyTable = document.getElementById('historyTable');
+        const tbody = historyTable.querySelector('tbody');
+        tbody.innerHTML = ''; // Очищаем предыдущие данные
+
+        if (data.history.length > 0) {
+            data.history.forEach(sale => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${sale.orderId}</td>
+                    <td>${sale.tickets}</td>
+                    <td>${sale.price}</td>
+                    <td>${sale.formId}</td>
                 `;
-
-                // Отображаем историю заказов
-                const historyTable = document.getElementById('historyTable');
-                const tbody = historyTable.querySelector('tbody');
-                tbody.innerHTML = ''; // Очищаем предыдущие данные
-
-                if (data.history.length > 0) {
-                    data.history.forEach(sale => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${sale.orderId}</td>
-                            <td>${sale.tickets}</td>
-                            <td>${sale.price}</td>
-                            <td>${sale.formId}</td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                    historyTable.style.display = 'table'; // Показываем таблицу
-                } else {
-                    historyTable.style.display = 'none'; // Скрываем таблицу, если данных нет
-                }
-            } catch (error) {
-                console.error('Ошибка:', error);
-            }
+                tbody.appendChild(row);
+            });
+            historyTable.style.display = 'table'; // Показываем таблицу
+        } else {
+            historyTable.style.display = 'none'; // Скрываем таблицу, если данных нет
         }
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
+}
     </script>
 </body>
 </html>
