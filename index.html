@@ -13,7 +13,7 @@
             padding: 10px;
             font-size: 16px;
         }
-        #result {
+        #result, #debug {
             margin-top: 20px;
             font-size: 18px;
         }
@@ -37,6 +37,7 @@
     <input type="text" id="promoCode" placeholder="Введите промокод">
     <button onclick="checkSales()">Проверить</button>
     <div id="result"></div>
+    <div id="debug"></div>
     <table id="historyTable" style="display: none;">
         <thead>
             <tr>
@@ -85,6 +86,17 @@
                 } else {
                     historyTable.style.display = 'none'; // Скрываем таблицу, если данных нет
                 }
+
+                // Отображаем отладочную информацию
+                const debugDiv = document.getElementById('debug');
+                debugDiv.innerHTML = `
+                    <h3>Отладочная информация:</h3>
+                    <p><strong>Промокод:</strong> ${data.promoCode}</p>
+                    <p><strong>Все данные из таблицы:</strong></p>
+                    <pre>${data.allData}</pre>
+                    <p><strong>Найденные продажи:</strong></p>
+                    <pre>${data.foundSales}</pre>
+                `;
             } catch (error) {
                 console.error('Ошибка:', error);
             }
