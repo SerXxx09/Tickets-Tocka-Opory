@@ -55,7 +55,6 @@ button:hover {
     display: none; /* Скрываем отладочную информацию для партнёров */
 }
 
-/* Добавь это в твой styles.css */
 table {
     width: 100%;
     max-width: 600px;
