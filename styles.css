@@ -63,15 +63,12 @@ table {
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    overflow-x: auto; /* Добавляем горизонтальную прокрутку */
-    display: block; /* Делаем таблицу блочным элементом */
 }
 
 th, td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-    white-space: nowrap; /* Запрещаем перенос текста */
 }
 
 th {
@@ -81,4 +78,36 @@ th {
 
 tr:hover {
     background-color: #f1f1f1;
+}
+
+@media (max-width: 600px) {
+    table, thead, tbody, th, td, tr {
+        display: block; /* Преобразуем таблицу в блочные элементы */
+    }
+
+    thead tr {
+        display: none; /* Скрываем заголовки на мобильных устройствах */
+    }
+
+    tr {
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    td {
+        border: none;
+        position: relative;
+        padding-left: 50%; /* Добавляем отступ для текста */
+    }
+
+    td::before {
+        content: attr(data-label); /* Используем атрибут data-label для подписей */
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+    }
 }
