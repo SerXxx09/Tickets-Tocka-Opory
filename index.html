@@ -13,7 +13,7 @@
             padding: 10px;
             font-size: 16px;
         }
-        #result, #debug {
+        #result {
             margin-top: 20px;
             font-size: 18px;
         }
@@ -37,7 +37,6 @@
     <input type="text" id="promoCode" placeholder="Введите промокод">
     <button onclick="checkSales()">Проверить</button>
     <div id="result"></div>
-    <div id="debug"></div>
     <table id="historyTable" style="display: none;">
         <thead>
             <tr>
@@ -53,7 +52,7 @@
     <script>
         async function checkSales() {
             const promoCode = document.getElementById('promoCode').value;
-            const url = `https://script.google.com/macros/s/AKfycbzuIb9hhCOrmSLko76bHrV-TDZ0Rx5VGwap2ArnbnZRl4ZMjNPvS_shJTuEA34_VBaq/exec?promoCode=${promoCode}`;
+            const url = `https://script.google.com/macros/s/AKfycbwNBhHlR23OQMivtSsSBdCvu-nNrJWQTnQdX8P4pMI-W2Jj2nCQzVo23dzB1usLorPJ/exec?promoCode=${promoCode}`;
 
             try {
                 const response = await fetch(url);
@@ -86,17 +85,6 @@
                 } else {
                     historyTable.style.display = 'none'; // Скрываем таблицу, если данных нет
                 }
-
-                // Отображаем отладочную информацию
-                const debugDiv = document.getElementById('debug');
-                debugDiv.innerHTML = `
-                    <h3>Отладочная информация:</h3>
-                    <p><strong>Промокод:</strong> ${data.promoCode}</p>
-                    <p><strong>Все данные из таблицы:</strong></p>
-                    <pre>${data.allData}</pre>
-                    <p><strong>Найденные продажи:</strong></p>
-                    <pre>${data.foundSales}</pre>
-                `;
             } catch (error) {
                 console.error('Ошибка:', error);
             }
